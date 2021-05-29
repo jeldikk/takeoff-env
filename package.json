@@ -1,6 +1,6 @@
 {
   "name": "detach-env",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a command line utility that clean old or unused projects node_modules folder to create space ..!!",
   "main": "./dist/cli.js",
   "scripts": {
