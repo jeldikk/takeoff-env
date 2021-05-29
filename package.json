@@ -1,8 +1,8 @@
 {
-  "name": "takeoff-env",
+  "name": "detach-env",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "a command line utility that clean old or unused projects node_modules folder to create space ..!!",
+  "main": "./dist/cli.js",
   "scripts": {
     "build": "npx tsc",
     "test:dev": "npx jest --watchAll",
@@ -18,13 +18,18 @@
   "author": "jeldikk",
   "license": "ISC",
   "bin": {
-    "takeoff-env": "./dist/cli.js"
+    "detach-env": "./dist/cli.js"
   },
   "files": [
     "dist",
     "LICENSE",
     "README.md"
   ],
+  "homepage": "https://github.com/jeldikk/takeoff-env/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeldikk/takeoff-env.git"
+  },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/jest": "^26.0.23",
