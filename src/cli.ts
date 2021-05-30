@@ -1,74 +1,67 @@
 #!/usr/bin/env node
 
-import {promises as fs} from "fs"
+import {PathLike, promises as fs} from "fs"
 import path from 'path'
 import ora from "ora";
-import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
+import {parseArguments} from "./lib/parser"
 import {printError, printInfo, printSuccess} from "./lib/color-printer"
-import {isDirectory} from "./lib/fs-helps"
+import {ISource, generateSourceData, isDirectory, resolve, removeFolder} from "./lib/fs-helps"
 import {isNodeProject, isNodeEnvironmentPresent} from "./lib/utils"
 
-export async function parseArguments(argVector: string[]) {
-  return yargs(argVector).options({
-    path: {
-      type: "string",
-      demandOption: true,
-      alias: "p",
-    },
-    days: {
-      type: "number",
-      demandOption: false,
-      alias: "d",
-      default: 0,
-    },
-    months: {
-      type: "number",
-      demandOption: false,
-      alias: "M",
-      default: 6,
-    },
-    analyse:{
-        type: "boolean",
-        demandOption: false,
-        default: false
-    }
-  }).argv;
-}
 
+const spinner = ora("Please Wait Analysing data").start();
 
-const spinner = ora("Loading modules");
+const sourceData: Array<ISource> = []
 
 async function main(){
 
     const response = await parseArguments(hideBin(process.argv));
-    // const timeInterval = 
     
-    // const pathStatus = await fs.lstat(response.path);
     if(await isDirectory(response.path)){
 
         const projectList = await fs.readdir(response.path);
 
         for(let item of projectList){
-            let projectPath = path.resolve(response.path, item);
+            let projectPath = resolve(response.path, item)
             if(await isDirectory(projectPath)){
-                if(await isNodeEnvironmentPresent(path.resolve(response.path, item))){
-                    printSuccess("Node environment is present")
+                if(await isNodeEnvironmentPresent(response.path, item)){
+                    // printSuccess("Node environment is present")
+                    const data = await generateSourceData(response.path, item)
+                    sourceData.push(data)
                 }
                 else{
-                    printInfo("Node environment is not present")
+                    // printInfo(`noenv: ${resolve(response.path, item)}`)
                 }
             }
-            else{
-                printInfo("Not a folder")
-            }
+            // else{
+            //     printInfo("Not a folder")
+            // }
             
         }
+
+        spinner.succeed("Analysis completed")
+        console.log("Found some data to display")
         
     }
     else{
         printError("Provided path is not a valid directory")
+    }
+
+    // console.log({sourceData})
+
+    let freeableMemory = 0;
+    sourceData.forEach((node)=>{
+      freeableMemory = freeableMemory + node.size
+    })
+    console.log({freeableMemory})
+
+    for(const source of sourceData){
+      spinner.text = `Removing Folder: ${source.path}`
+      spinner.start()
+      await removeFolder(source);
+      spinner.warn(`Deleted Folder`)
     }
 }
 
