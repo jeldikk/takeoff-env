@@ -1,6 +1,9 @@
+import chalk from 'chalk'
+// import {printInfo, printWarning, printError, printSuccess} from "../src/lib/color-printer"
+
 describe("Testing color-printer functions", ()=>{
 
-    test("test1", ()=>{
-        expect(1).toBe(1)
+    test("Info text testing", ()=>{
+
     })
 })
