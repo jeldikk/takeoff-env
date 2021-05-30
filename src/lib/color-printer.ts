@@ -1,5 +1,13 @@
 import chalk from 'chalk'
 
+export function makeInfo(message: string){
+    return chalk.yellow(message);
+}
+
+export function makeWarning(message: string){
+    return chalk.green(message);
+}
+
 export function printInfo(message: string){
     console.log(chalk.yellow(message))
 }
