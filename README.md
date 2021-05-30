@@ -2,6 +2,20 @@
 
 a command line utility that clean old or unused projects node_modules folder to create space ..!!
 
-usage:
 
-takeoff-env <path-to-projects> -d --days -m --months
+#### install
+
+```sh
+$ npm install -g detach-env
+```
+
+usage:
+```sh
+$ detach-env <path-to-projects> -d --days -m --month
+```
+
+**platform**
+As of now it works only on linux
+
+
+
